@@ -61,7 +61,7 @@ public class MemberDao {
 		
 		try(Connection conn = connectionProvider.getConnection()) {
 			PreparedStatement stmt = conn.prepareStatement(
-					"SELECT * FROM member WHERE username = ? AND password = ?");
+					"SELECT id, username, nickname, joindate FROM member WHERE username = ? AND password = ?");
 			stmt.setString(1, member.getUsername());
 			stmt.setString(2, member.getPassword());
 		

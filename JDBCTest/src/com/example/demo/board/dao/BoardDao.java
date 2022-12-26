@@ -2,13 +2,16 @@ package com.example.demo.board.dao;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
+import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.sql.SQLIntegrityConstraintViolationException;
 import java.sql.Timestamp;
+import java.time.OffsetDateTime;
+import java.util.ArrayList;
+import java.util.List;
 
 import com.example.demo.board.domain.BoardAddResult;
 import com.example.demo.board.dto.BoardDto.BoardCreateRequest;
-import com.example.demo.member.domain.JoinResultState;
+import com.example.demo.board.dto.BoardVo;
 import com.example.demo.util.jdbc.DefaultConnectionProvider;
 import com.example.demo.util.jdbc.DefaultJdbcTypeConvertor;
 import com.example.demo.util.jdbc.JdbcTypeConvertor;
@@ -45,6 +48,32 @@ public class BoardDao {
 		return BoardAddResult.SUCCESS;
 	}
 
+	public List<BoardVo> list() {
+		List<BoardVo> boardList = new ArrayList<>();
+		
+		try (Connection conn = connectionProvider.getConnection()) {
+			PreparedStatement stmt = conn.prepareStatement(
+					"SELECT id, title, author_name, created_at FROM board");
+			ResultSet rs = stmt.executeQuery();
+			
+			while(rs.next()) {
+				Long id = rs.getLong("id");
+				String title = rs.getString("title");
+				String author = rs.getString("author_name");
+				Timestamp timestamp = rs.getTimestamp("created_at");
+				OffsetDateTime createdAt = typeConvertor.timestampToOffsetDateTime(timestamp);
+				BoardVo board = new BoardVo(id, title, author, createdAt);
+				boardList.add(board);
+			}
+			
+			stmt.close();
+		} catch (SQLException e) {
+			e.printStackTrace();
+			return null;
+		}
+		
+		return boardList;
+	}
 	
 	
 }

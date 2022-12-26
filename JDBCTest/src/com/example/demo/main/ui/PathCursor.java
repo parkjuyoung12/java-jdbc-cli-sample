@@ -7,5 +7,6 @@ public enum PathCursor {
 	LOGOUT,
 	BOARD_HOME,
 	BOARD_CREATE,
+	BOARD_LIST,
 	QUIT
 }

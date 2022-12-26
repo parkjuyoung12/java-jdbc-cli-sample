@@ -11,14 +11,23 @@ public class BoardVo {
 	private String author;
 	private Long authorId;
 	private OffsetDateTime createdAt;
-
-	public BoardVo(String title, String content, String author, Long authorId) {
+	
+	public BoardVo(Long id, String title, String author, OffsetDateTime createdAt) {
 		super();
+		this.id = id;
+		this.title = title;
+		this.author = author;
+		this.createdAt = createdAt;
+	}
+
+	public BoardVo(Long id, String title, String content, String author, Long authorId, OffsetDateTime createdAt) {
+		super();
+		this.id = id;
 		this.title = title;
 		this.content = content;
 		this.author = author;
 		this.authorId = authorId;
-		this.createdAt = OffsetDateTime.now(ZoneId.of("Asia/Tokyo"));
+		this.createdAt = createdAt;
 	}
 
 	public Long getId() {

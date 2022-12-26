@@ -1,15 +1,18 @@
 package com.example.demo.main;
 
+import java.util.List;
 import java.util.Scanner;
 
+import com.example.demo.board.dao.BoardDao;
 import com.example.demo.board.domain.BoardAddResult;
+import com.example.demo.board.dto.BoardVo;
 import com.example.demo.board.service.BoardService;
 import com.example.demo.board.service.DefaultBoardService;
 import com.example.demo.main.ui.PathCursor;
 import com.example.demo.member.domain.JoinResultState;
 import com.example.demo.member.domain.LoginResultState;
-import com.example.demo.member.dto.MemberVo;
 import com.example.demo.member.dto.MemberDto.LoginResponseDto;
+import com.example.demo.member.dto.MemberVo;
 import com.example.demo.member.service.DefaultMemberService;
 import com.example.demo.member.service.MemberService;
 
@@ -48,6 +51,10 @@ public class MainApplication {
 					
 				case BOARD_CREATE:
 					boardAddForm();
+					break;
+
+				case BOARD_LIST:
+					boardList();
 					break;
 					
 				case QUIT:
@@ -200,7 +207,8 @@ public class MainApplication {
 		System.out.println("===========================");
 		System.out.println("=========== BOARD ==========");
 		System.out.println(" 1. 글쓰기");
-		System.out.println(" 0. 뒤로가기");
+		System.out.println(" 2. 목록 보기");
+		System.out.println(" 0. 뒤로 가기");
 		System.out.print("> ");
 		sel = scan.nextInt();
 		scan.nextLine();
@@ -208,6 +216,9 @@ public class MainApplication {
 		switch(sel) {
 			case 1:
 				this.cursor = PathCursor.BOARD_CREATE;
+				break;
+			case 2:
+				this.cursor = PathCursor.BOARD_LIST;
 				break;
 			case 0:
 				this.cursor = PathCursor.HOME;
@@ -238,5 +249,21 @@ public class MainApplication {
 		}
 		
 		return;
+	}
+	
+	private void boardList() {
+		List<BoardVo> list = boardService.list();
+		System.out.println("===========================");
+		System.out.println("========= Board List ========");
+		for(int i = 0; i<list.size(); i++) {
+			BoardVo board = list.get(i);
+			System.out.println("===========================");
+			System.out.println(String.format("[%d] 제목: %s", board.getId(), board.getTitle()));
+			System.out.println(String.format("글쓴이: %s | 작성일: %s", board.getAuthor(), board.getFormattedCreatedAt()));
+		}
+		System.out.println("===========================");
+		
+		this.cursor = PathCursor.BOARD_HOME;
+		
 	}
 }

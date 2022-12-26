@@ -2,9 +2,11 @@ package com.example.demo.board.service;
 
 import java.time.OffsetDateTime;
 import java.time.ZoneId;
+import java.util.List;
 
 import com.example.demo.board.dao.BoardDao;
 import com.example.demo.board.domain.BoardAddResult;
+import com.example.demo.board.dto.BoardVo;
 import com.example.demo.board.dto.BoardDto.BoardCreateRequest;
 
 public class DefaultBoardService implements BoardService {
@@ -21,5 +23,12 @@ public class DefaultBoardService implements BoardService {
 				OffsetDateTime.now(ZoneId.of("Asia/Tokyo")));
 		
 		return boardDao.save(dto);
+	}
+	
+	@Override
+	public List<BoardVo> list() {
+		List<BoardVo> list = boardDao.list();
+		
+		return list;
 	}
 }

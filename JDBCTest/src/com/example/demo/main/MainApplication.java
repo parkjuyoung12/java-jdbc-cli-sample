@@ -230,8 +230,13 @@ public class MainApplication {
 		
 		BoardAddResult result = boardService.add(title, content, authorId, author);
 		if(result == BoardAddResult.SUCCESS) {
+			System.out.println("글쓰기 완료");
+			this.cursor = PathCursor.BOARD_HOME;			
+		} else if (result == BoardAddResult.CONNECTION_ERROR) {
+			System.out.println("서버 오류로 인하여 글쓰기 불가");
 			this.cursor = PathCursor.BOARD_HOME;
 		}
+		
 		return;
 	}
 }

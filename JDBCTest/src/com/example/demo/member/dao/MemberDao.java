@@ -66,8 +66,6 @@ public class MemberDao {
 			stmt.setString(2, member.getPassword());
 		
 			rs = stmt.executeQuery();
-			// rs -> MemberVo
-			
 			boolean hasNext = rs.next();
 			
 			if(!hasNext) {

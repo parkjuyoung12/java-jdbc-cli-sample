@@ -35,6 +35,7 @@ public class MainApplication {
 					break;
 					
 				case LOGOUT:
+					logout();
 					break;
 					
 				case QUIT:
@@ -62,6 +63,7 @@ public class MainApplication {
 
 	private void homeAuthorized() {
 		System.out.println("메뉴를 선택하세요.");
+		System.out.println(" 9. 로그아웃");
 		System.out.println(" 0. 종료");
 		System.out.print("> ");
 		
@@ -71,6 +73,9 @@ public class MainApplication {
 		switch (number) {
 			case 0:
 				this.cursor = PathCursor.QUIT;
+				break;
+			case 9:
+				this.cursor = PathCursor.LOGOUT;
 				break;
 			default:
 				break;
@@ -167,4 +172,12 @@ public class MainApplication {
 
 		return;
 	}
+	
+	private void logout() {
+		loginMember = null;
+		System.out.println("로그아웃 되었습니다.");
+		this.cursor = PathCursor.HOME;
+	}
+	
+	
 }

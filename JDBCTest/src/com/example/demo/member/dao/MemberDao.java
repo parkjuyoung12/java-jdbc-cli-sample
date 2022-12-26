@@ -77,7 +77,7 @@ public class MemberDao {
 			
 			Long id = rs.getLong("id");
 			String username = rs.getString("username");
-			String nickname = rs.getString("username");
+			String nickname = rs.getString("nickname");
 			Timestamp joindateTimestamp = rs.getTimestamp("joindate");
 			OffsetDateTime joindate = typeConvertor.timestampToOffsetDateTime(joindateTimestamp);
 			

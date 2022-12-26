@@ -5,4 +5,5 @@ import java.time.OffsetDateTime;
 
 public interface JdbcTypeConvertor {
 	OffsetDateTime timestampToOffsetDateTime(Timestamp timestamp);
+	Timestamp offsetDateTimeToTimestamp(OffsetDateTime offsetDateTime);
 }

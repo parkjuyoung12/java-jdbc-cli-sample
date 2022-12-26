@@ -3,7 +3,7 @@ package com.example.demo.member.dto;
 import java.io.Serializable;
 import java.time.OffsetDateTime;
 
-import com.example.demo.member.dao.LoginResultState;
+import com.example.demo.member.domain.LoginResultState;
 
 public final class MemberDto {
 

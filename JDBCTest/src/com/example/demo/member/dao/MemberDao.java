@@ -16,6 +16,8 @@ import java.sql.Date;
 
 import com.example.demo.member.dto.MemberDto.LoginRequestDto;
 import com.example.demo.member.dto.MemberDto.LoginResponseDto;
+import com.example.demo.member.domain.JoinResultState;
+import com.example.demo.member.domain.LoginResultState;
 import com.example.demo.member.dto.MemberVo;
 import com.example.demo.util.jdbc.DefaultConnectionProvider;
 import com.example.demo.util.jdbc.DefaultJdbcTypeConvertor;

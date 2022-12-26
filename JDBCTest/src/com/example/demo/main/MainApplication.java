@@ -2,9 +2,12 @@ package com.example.demo.main;
 
 import java.util.Scanner;
 
+import com.example.demo.board.domain.BoardAddResult;
+import com.example.demo.board.service.BoardService;
+import com.example.demo.board.service.DefaultBoardService;
 import com.example.demo.main.ui.PathCursor;
-import com.example.demo.member.dao.JoinResultState;
-import com.example.demo.member.dao.LoginResultState;
+import com.example.demo.member.domain.JoinResultState;
+import com.example.demo.member.domain.LoginResultState;
 import com.example.demo.member.dto.MemberVo;
 import com.example.demo.member.dto.MemberDto.LoginResponseDto;
 import com.example.demo.member.service.DefaultMemberService;
@@ -18,6 +21,7 @@ public class MainApplication {
 	private PathCursor cursor = PathCursor.HOME;
 	
 	private final MemberService memberService = new DefaultMemberService();
+	private final BoardService boardService = new DefaultBoardService();
 	
 	public void run() {
 		mainLoop: while(true) {
@@ -36,6 +40,14 @@ public class MainApplication {
 					
 				case LOGOUT:
 					logout();
+					break;
+					
+				case BOARD_HOME:
+					boardHome();
+					break;
+					
+				case BOARD_CREATE:
+					boardAddForm();
 					break;
 					
 				case QUIT:
@@ -63,6 +75,7 @@ public class MainApplication {
 
 	private void homeAuthorized() {
 		System.out.println("메뉴를 선택하세요.");
+		System.out.println(" 1. 게시판 가기");		
 		System.out.println(" 9. 로그아웃");
 		System.out.println(" 0. 종료");
 		System.out.print("> ");
@@ -73,6 +86,9 @@ public class MainApplication {
 		switch (number) {
 			case 0:
 				this.cursor = PathCursor.QUIT;
+				break;
+			case 1:
+				this.cursor = PathCursor.BOARD_HOME;
 				break;
 			case 9:
 				this.cursor = PathCursor.LOGOUT;
@@ -179,5 +195,43 @@ public class MainApplication {
 		this.cursor = PathCursor.HOME;
 	}
 	
+	private void boardHome() {
+		int sel;
+		System.out.println("===========================");
+		System.out.println("=========== BOARD ==========");
+		System.out.println(" 1. 글쓰기");
+		System.out.println(" 0. 뒤로가기");
+		System.out.print("> ");
+		sel = scan.nextInt();
+		scan.nextLine();
+		
+		switch(sel) {
+			case 1:
+				this.cursor = PathCursor.BOARD_CREATE;
+				break;
+			case 0:
+				this.cursor = PathCursor.HOME;
+				break;
+		}
+	}
 	
+	private void boardAddForm() {
+		String title;
+		String content;
+		String author = loginMember.getNickname();
+		Long authorId = loginMember.getId(); // 원래는 UI단 작업이 아니라 DB에서 조회해서. <- 지금은 세션 기능이랑 같으니까 신뢰하고 씀.
+		
+		System.out.println("===========================");
+		System.out.println("========= Add Form ========");
+		System.out.print("제목: ");
+		title = scan.nextLine();		
+		System.out.println("내용: ");
+		content = scan.nextLine();
+		
+		BoardAddResult result = boardService.add(title, content, authorId, author);
+		if(result == BoardAddResult.SUCCESS) {
+			this.cursor = PathCursor.BOARD_HOME;
+		}
+		return;
+	}
 }

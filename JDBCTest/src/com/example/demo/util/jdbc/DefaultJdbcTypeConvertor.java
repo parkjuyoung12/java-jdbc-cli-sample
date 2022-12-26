@@ -6,6 +6,7 @@ import java.time.OffsetDateTime;
 import java.time.ZoneId;
 
 public class DefaultJdbcTypeConvertor implements JdbcTypeConvertor {
+	
 	@Override
 	public OffsetDateTime timestampToOffsetDateTime(Timestamp timestamp) {
 		Long epochMillis = timestamp.getTime();
@@ -15,5 +16,10 @@ public class DefaultJdbcTypeConvertor implements JdbcTypeConvertor {
 				ZoneId.of("Asia/Tokyo"));
 		
 		return offsetDateTime;
+	}
+	
+	@Override
+	public Timestamp offsetDateTimeToTimestamp(OffsetDateTime offsetDateTime) {
+		return Timestamp.from(offsetDateTime.toInstant());
 	}
 }

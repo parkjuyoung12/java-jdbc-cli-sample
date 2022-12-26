@@ -1,4 +1,4 @@
-package com.example.demo.member.dao;
+package com.example.demo.member.domain;
 
 public enum LoginResultState {
 	SUCCESS,

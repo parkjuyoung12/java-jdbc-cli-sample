@@ -19,6 +19,14 @@ public class MemberVo {
 		this.nickname = nickname;
 		this.joindate = OffsetDateTime.now(ZoneId.of("Asia/Tokyo"));
 	}
+	
+	public MemberVo(Long id, String username, String nickname, OffsetDateTime joindate) {
+		super();
+		this.id = id;
+		this.username = username;
+		this.nickname = nickname;
+		this.joindate = joindate;
+	}
 
 	public Long getId() {
 		return id;

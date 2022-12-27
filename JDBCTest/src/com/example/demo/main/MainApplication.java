@@ -22,6 +22,7 @@ import com.example.demo.member.service.MemberService;
 // UI 분리 안 함. 여기서 수행.
 public class MainApplication {
 	
+	
 	private final Scanner scan = new Scanner(System.in);
 	private MemberVo loginMember;
 	private PathCursor cursor = PathCursor.HOME;

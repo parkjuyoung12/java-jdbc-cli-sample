@@ -1,8 +1,10 @@
 package com.example.demo.member.service;
 
-import com.example.demo.member.dao.JoinResultState;
 import com.example.demo.member.dao.MemberDao;
+import com.example.demo.member.domain.JoinResultState;
 import com.example.demo.member.dto.MemberVo;
+import com.example.demo.member.dto.MemberDto.LoginRequestDto;
+import com.example.demo.member.dto.MemberDto.LoginResponseDto;
 
 public class DefaultMemberService implements MemberService {
 
@@ -13,5 +15,13 @@ public class DefaultMemberService implements MemberService {
 		MemberVo member = new MemberVo(username, password, nickname);
 		JoinResultState joinState = memberDao.join(member);
 		return joinState;
+	}
+	
+	@Override
+	public LoginResponseDto login(String username, String password) {
+		LoginRequestDto member = new LoginRequestDto(username, password);
+		LoginResponseDto result = memberDao.login(member);
+		
+		return result;
 	}
 }

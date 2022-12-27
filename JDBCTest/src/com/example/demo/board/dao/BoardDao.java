@@ -10,7 +10,10 @@ import java.util.ArrayList;
 import java.util.List;
 
 import com.example.demo.board.domain.BoardAddResult;
+import com.example.demo.board.domain.BoardDetailState;
+import com.example.demo.board.dto.BoardDto;
 import com.example.demo.board.dto.BoardDto.BoardCreateRequest;
+import com.example.demo.board.dto.BoardDto.BoardDetailResponse;
 import com.example.demo.board.dto.BoardVo;
 import com.example.demo.util.jdbc.DefaultConnectionProvider;
 import com.example.demo.util.jdbc.DefaultJdbcTypeConvertor;
@@ -25,7 +28,6 @@ public class BoardDao {
 	public BoardAddResult save(BoardCreateRequest dto) {
 		int result = 0;
 		// offsetDateTime to LocalDate
-
 		
 		try (Connection conn = connectionProvider.getConnection()) {
 			PreparedStatement stmt = conn.prepareStatement(
@@ -74,6 +76,47 @@ public class BoardDao {
 		
 		return boardList;
 	}
+
+	public BoardDetailResponse detail(Long boardNum) {
+		ResultSet rs;
+		BoardDetailResponse result;
+		
+		try (Connection conn = connectionProvider.getConnection()) {
+			PreparedStatement stmt = conn.prepareStatement(
+					"SELECT id, title, content, author_name, created_at "
+					+ "FROM board "
+					+ "WHERE id = ?");
+			stmt.setLong(1, boardNum);
+			
+			rs = stmt.executeQuery();
+			boolean hasNext = rs.next();
+			
+			if(!hasNext) {
+				return new BoardDetailResponse(null, BoardDetailState.NO_SUCH_BOARD);
+			}
+			
+			Long id = rs.getLong("id");
+			String title = rs.getString("title");
+			String content = rs.getString("content");
+			String authorName = rs.getString("author_name");
+			Timestamp timestamp = rs.getTimestamp("created_at");
+			OffsetDateTime createdAt = 
+					typeConvertor.timestampToOffsetDateTime(timestamp);
+
+			BoardVo board = new BoardVo(id, title, content, authorName, createdAt);
+			
+			result = new BoardDetailResponse(board, BoardDetailState.SUSSESS);
+			
+			stmt.close();
+		} catch (SQLException e) {
+			e.printStackTrace();
+			return new BoardDetailResponse(null, BoardDetailState.CONNECTION_ERROR);
+		}
+		
+		return result;
+	}
+
+	
 	
 	
 }

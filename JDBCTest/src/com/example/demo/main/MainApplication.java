@@ -1,10 +1,13 @@
 package com.example.demo.main;
 
+import java.time.OffsetDateTime;
 import java.util.List;
 import java.util.Scanner;
 
 import com.example.demo.board.dao.BoardDao;
 import com.example.demo.board.domain.BoardAddResult;
+import com.example.demo.board.domain.BoardDetailState;
+import com.example.demo.board.dto.BoardDto.BoardDetailResponse;
 import com.example.demo.board.dto.BoardVo;
 import com.example.demo.board.service.BoardService;
 import com.example.demo.board.service.DefaultBoardService;
@@ -55,6 +58,10 @@ public class MainApplication {
 
 				case BOARD_LIST:
 					boardList();
+					break;
+					
+				case BOARD_DETAIL:
+					boardDetail();
 					break;
 					
 				case QUIT:
@@ -262,8 +269,79 @@ public class MainApplication {
 			System.out.println(String.format("글쓴이: %s | 작성일: %s", board.getAuthor(), board.getFormattedCreatedAt()));
 		}
 		System.out.println("===========================");
+		System.out.println(" 1. 글 선택");
+		System.out.println(" 2. 검색(미지원)");
+		System.out.println(" 0. 뒤로가기");
+		System.out.print("> ");
 		
-		this.cursor = PathCursor.BOARD_HOME;
+		int result = scan.nextInt();
+		scan.nextLine();
 		
+		switch(result) {
+			case 1:
+				this.cursor = PathCursor.BOARD_DETAIL;
+				break;
+			case 2:
+				break;
+			case 0:
+				this.cursor = PathCursor.BOARD_HOME;
+				break;
+			default:
+				break;
+		}
 	}
+	
+	private void boardDetail() {
+		System.out.println("===========================");
+		System.out.println("========= 글번호 입력 ========");
+		System.out.println("(뒤로 가려면 0 입력)");
+		System.out.print(" > ");
+		Long boardNum = scan.nextLong();
+		scan.nextLine();
+		
+		if(boardNum == 0) {
+			this.cursor = PathCursor.BOARD_LIST;
+			return;
+		}
+		
+		BoardDetailResponse res = boardService.detail(boardNum);
+		BoardDetailState boardState = res.getState();
+		
+		if(boardState == BoardDetailState.NO_SUCH_BOARD) {
+			System.out.println("잘못된 글 번호입니다.");
+			return;
+		}
+		
+		BoardVo board = res.getBoard();
+		System.out.println("===========================");
+		System.out.println("========= Board Detail ========");
+		System.out.println(String.format("[%d] 제목 : %s || 글쓴이 : %s || 작성일 : %s",
+				board.getId(),
+				board.getTitle(),
+				board.getAuthor(),
+				board.getFormattedCreatedAt()));
+		System.out.println(String.format("내용 : %s", board.getContent()));
+		System.out.println("===========================");
+		System.out.println(" 1. 댓글쓰기(미지원)");
+		System.out.println(" 0. 뒤로가기");
+		System.out.print("> ");
+		int result = scan.nextInt();
+		scan.nextLine();
+		
+		switch(result) {
+			case 0:
+				this.cursor = PathCursor.BOARD_LIST;
+				break;
+				
+			case 1:
+				System.out.println("미지원 이라고 이양반아. ");
+				this.cursor = PathCursor.BOARD_LIST;
+				break;
+				
+			default:
+				break;
+		}
+	}
+	
+	
 }

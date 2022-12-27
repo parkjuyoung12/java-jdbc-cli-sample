@@ -30,6 +30,15 @@ public class BoardVo {
 		this.createdAt = createdAt;
 	}
 
+	public BoardVo(Long id, String title, String content, String author, OffsetDateTime createdAt) {
+		super();
+		this.id = id;
+		this.title = title;
+		this.content = content;
+		this.author = author;
+		this.createdAt = createdAt;
+	}
+
 	public Long getId() {
 		return id;
 	}

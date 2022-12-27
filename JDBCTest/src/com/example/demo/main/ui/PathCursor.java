@@ -8,5 +8,6 @@ public enum PathCursor {
 	BOARD_HOME,
 	BOARD_CREATE,
 	BOARD_LIST,
+	BOARD_DETAIL,
 	QUIT
 }

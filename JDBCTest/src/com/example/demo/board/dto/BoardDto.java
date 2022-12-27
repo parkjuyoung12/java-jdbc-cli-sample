@@ -1,10 +1,13 @@
 package com.example.demo.board.dto;
 
+import java.io.Serializable;
 import java.time.OffsetDateTime;
+
+import com.example.demo.board.domain.BoardDetailState;
 
 public class BoardDto {
 
-	public static final class BoardCreateRequest {
+	public static final class BoardCreateRequest implements Serializable {
 		private String title;
 		private String content;
 		private Long authorId;
@@ -38,6 +41,33 @@ public class BoardDto {
 
 		public OffsetDateTime getCreatedAt() {
 			return createdAt;
+		}
+	}
+	
+	public static final class BoardDetailResponse implements Serializable {
+		
+		private final BoardVo board;
+		private final BoardDetailState state;
+		
+		public BoardDetailResponse(BoardVo board, BoardDetailState state) {
+			super();
+			this.board = board;
+			this.state = state;
+		}
+
+		public BoardVo getBoard() {
+			return board;
+		}
+
+		public BoardDetailState getState() {
+			return state;
+		}
+
+		@Override
+		public String toString() {
+			return String.format("BoardDetailResponse {board=%s, state=%s}",
+					this.board.toString(),
+					this.state);
 		}
 	}
 }
